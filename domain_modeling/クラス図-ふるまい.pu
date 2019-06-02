@@ -55,6 +55,7 @@ package domain <<Frame>> {
         +vanish()
         +fire()
     }
+    
     abstract class "弾ファクトリー" as BulletFactory {
         +create()
         +{abstract} Bullet createBullet()
@@ -76,6 +77,11 @@ package controller <<Frame>> {
 
     BulletFactory --> Bullet : Creates
 
+    Class "PIXISpriteファクトリー" as PixiSpriteFactory {
+        +void addChildSprite(Sprite)
+        +void removeChildSprite(Sprite)
+    }
+
     Class "自機弾ファクトリー" as MyBulletFactory extends BulletFactory{
         +MyBullet createBullet()
         +void registerBullet()
@@ -88,6 +94,9 @@ package controller <<Frame>> {
         +void registerBullet()
     }
 
+    MyBulletFactory *-- PixiSpriteFactory
+    EnemyBulletFactory *-- PixiSpriteFactory
+
     EnemyBulletFactory --> EnemyBullet : Creates
 
     Class "自機ビュー" as MyAircraftView {
@@ -97,10 +106,18 @@ package controller <<Frame>> {
 
 }
 
-Administrator *-- MyAircraft
-Administrator *-- EnemyAircraft
-Administrator *-- MyBullet
-Administrator *-- EnemyBullet
+package infra <<Frame>> {
+    class "キーボード管理" as KeyboardManager {
+        keyboard: Keyboard
+    }
+
+    class "キーボード" as Keyboard {
+
+    }
+
+}
+
+Administrator *-- domain
 
 
 @enduml
